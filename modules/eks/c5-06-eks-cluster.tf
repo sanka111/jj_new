@@ -1,0 +1,33 @@
+# Create AWS EKS Cluster
+resource "aws_eks_cluster" "eks_cluster" {
+  name     = var.cluster_name
+  role_arn = aws_iam_role.eks_master_role.arn
+  version = var.cluster_version
+  tags = var.common_tags
+
+  vpc_config {
+    subnet_ids = var.eks_subnets
+    endpoint_private_access = var.cluster_endpoint_private_access
+    endpoint_public_access  = var.cluster_endpoint_public_access
+    public_access_cidrs     = var.cluster_endpoint_public_access_cidrs 
+  }
+
+  access_config {
+    authentication_mode                         = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = true
+  }
+/*
+  kubernetes_network_config {
+    service_ipv4_cidr = var.secondary_cidr_blocks
+  }
+  */
+  # Enable EKS Cluster Control Plane Logging
+  enabled_cluster_log_types = []
+
+  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
+  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
+  depends_on = [
+    aws_iam_role_policy_attachment.eks-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.eks-AmazonEKSVPCResourceController,
+  ]
+}
