@@ -2,7 +2,7 @@
 # Security Group for Public Bastion Host
 
 resource "aws_security_group" "bastion_sg" {
-  name        = "wowmall-prod-bastion-sg"
+  name        = "soeasy-bastion-sg"
   description = "Security group for bastion server"
   vpc_id      = var.vpc_id
 
