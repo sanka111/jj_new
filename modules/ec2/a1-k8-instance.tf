@@ -17,33 +17,33 @@ module "k8_master" {
   user_data = <<-EOF
     #!/bin/bash
     # Update the package list
-    apt-get update -y
+    sudo apt-get update -y
 
     # Install Docker (required for Kubernetes)
-    apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+    sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
 
     # Add Docker repository
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-    apt-get update -y
-    apt-get install -y containerd.io
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt-get update -y
+    sudo apt-get install -y containerd.io
 
     # Configure containerd to use systemd as cgroup driver
-    mkdir -p /etc/containerd
-    containerd config default > /etc/containerd/config.toml
-    sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
-    systemctl restart containerd
-    systemctl enable containerd
+    sudo mkdir -p /etc/containerd
+    sudo containerd config default > /etc/containerd/config.toml
+    sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+    sudo systemctl restart containerd
+    sudo systemctl enable containerd
 
     # Install Kubernetes components (kubelet, kubeadm, kubectl)
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
-    apt-get update -y
-    apt-get install -y kubelet kubeadm kubectl
-    apt-mark hold kubelet kubeadm kubectl
+    sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+    sudo apt-get update -y
+    sudo apt-get install -y kubelet kubeadm kubectl
+    sudo apt-mark hold kubelet kubeadm kubectl
 
     # Enable kubelet service
-    systemctl enable kubelet
+    sudo systemctl enable kubelet
 
     # Initialize Kubernetes master node (for master node only)
     # kubeadm init --pod-network-cidr=10.244.0.0/16
