@@ -14,7 +14,7 @@ variable "instance_type" {
 variable "instance_keypair" {
   description = "AWS EC2 Key pair that need to be associated with EC2 Instance"
   type = string
-  default = "wowmall-prod-new"
+  default = "soeasy-k8"
 }
 
 #Variabe to get VPC ID from VPC Module
@@ -23,7 +23,7 @@ variable "vpc_id" {
 }
 
 #Variable to get public Subnet
-variable "dmz_subnet_ids" {
+variable "private_subnets_ids" {
   description = "A list of VPC subnet IDs"
   type        = list(string)
 }

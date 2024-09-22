@@ -12,11 +12,11 @@ output "vpc_cidr_block" {
   value       = module.vpc.vpc_cidr_block
 }
 
-# Secondary VPC CIDR blocks
-output "secondary_cidr_blocks" {
-  description = "The Secondary CIDR block of the VPC"
-  value       = module.vpc.intra_subnets_cidr_blocks
-}
+### Secondary VPC CIDR blocks
+##output "secondary_cidr_blocks" {
+##  description = "The Secondary CIDR block of the VPC"
+##  value       = module.vpc.intra_subnets_cidr_blocks
+##}
 
 # VPC Private Subnets
 output "private_subnets" {
@@ -30,18 +30,18 @@ output "dmz_subnets" {
   value       = module.vpc.public_subnets
 }
 
-#VPC databse subnet
-output "database_subnets" {
-  description = "dbsubnets"
-  value = module.vpc.database_subnets
+###VPC databse subnet
+##output "database_subnets" {
+##  description = "dbsubnets"
+##  value = module.vpc.database_subnets
+##
+##}
 
-}
-
-# VPC NAT gateway Public IP
-output "nat_public_ips" {
-  description = "List of public Elastic IPs created for AWS NAT Gateway"
-  value       = module.vpc.nat_public_ips
-}
+### VPC NAT gateway Public IP
+##output "nat_public_ips" {
+##  description = "List of public Elastic IPs created for AWS NAT Gateway"
+##  value       = module.vpc.nat_public_ips
+##}
 
 # VPC AZs
 output "azs" {

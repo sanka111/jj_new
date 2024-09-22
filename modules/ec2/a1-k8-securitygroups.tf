@@ -1,9 +1,9 @@
 # AWS EC2 Security Group Terraform Module
 # Security Group for Public Bastion Host
 
-resource "aws_security_group" "bastion_sg" {
-  name        = "wowmall-prod-bastion-sg"
-  description = "Security group for bastion server"
+resource "aws_security_group" "k8_sg" {
+  name        = "soeasy-k8-sg"
+  description = "Security group for k8 cluster"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -29,26 +29,16 @@ resource "aws_security_group_rule" "allow_ssh_public" {
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  security_group_id = aws_security_group.bastion_sg.id
+  security_group_id = aws_security_group.k8_sg.id
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "allow_ssh_adl_jump1" {
+resource "aws_security_group_rule" "allow_ssh_jump1" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
-  security_group_id = aws_security_group.bastion_sg.id
+  security_group_id = aws_security_group.k8_sg.id
   cidr_blocks = ["10.100.101.100/32"]
   description = "allow ssh from jump 1"
-}
-
-resource "aws_security_group_rule" "allow_ssh_adl_jump4" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  security_group_id = aws_security_group.bastion_sg.id
-  cidr_blocks = ["10.100.101.227/32"]
-  description = "allow ssh from jump 4"
 }

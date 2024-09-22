@@ -13,18 +13,19 @@ module "vpc" {
   azs  = data.aws_availability_zones.available.names
   #azs = var.vpc_availability_zones
   public_subnets  = var.vpc_prod_public_subnets
-  private_subnets = concat(var.vpc_prod_eks_subnets, var.vpc_prod_private_nat_subnets)
+  #private_subnets = concat(var.vpc_prod_k8_subnets, var.vpc_prod_private_nat_subnets)
+  private_subnets = concat(var.vpc_prod_k8_subnets)
 
   # Database Subnets
-  database_subnets = var.vpc_prod_database_subnets
-  create_database_subnet_group = var.vpc_create_database_subnet_group
-  create_database_subnet_route_table = var.vpc_create_database_subnet_route_table
+  ##database_subnets = var.vpc_prod_database_subnets
+  ##create_database_subnet_group = var.vpc_create_database_subnet_group
+  ##create_database_subnet_route_table = var.vpc_create_database_subnet_route_table
   # create_database_internet_gateway_route = true     #Defalut false
   # create_database_nat_gateway_route = true          #Defalut false
   
   # NAT Gateways - Outbound Communication
-  enable_nat_gateway = var.vpc_enable_nat_gateway 
-  single_nat_gateway = var.vpc_single_nat_gateway
+  ##enable_nat_gateway = var.vpc_enable_nat_gateway 
+  ##single_nat_gateway = var.vpc_single_nat_gateway
 
   # VPC DNS Parameters
   enable_dns_hostnames = true
@@ -38,12 +39,12 @@ module "vpc" {
     Type = "prod-public-subnets"  
   }
   private_subnet_tags = {
-    Type = "prod-eks-subnets"  
+    Type = "prod-k8-subnets"  
   }
 
-  database_subnet_tags = {
-    Type = "prod-database-subnets"
-  }
+  ##database_subnet_tags = {
+  ##  Type = "prod-database-subnets"
+  ##}
   # Instances launched into the Public subnet should be assigned a public IP address.
   map_public_ip_on_launch = true
 }

@@ -4,15 +4,15 @@ module "vpc" {
     common_tags = local.common_tags
 }
 
-#####Provision Bation
-##module "ec2" {
-##    source = "./modules/ec2"
-##    dmz_subnet_ids = module.vpc.dmz_subnets
-##    vpc_id = module.vpc.vpc_id 
-##    common_tags = local.common_tags
-##    cidr_blocks = module.vpc.vpc_cidr_block
-##}
-##
+###Provision Bation
+module "ec2" {
+    source = "./modules/ec2"
+    private_subnets_ids = module.vpc.private_subnets
+    vpc_id = module.vpc.vpc_id 
+    common_tags = local.common_tags
+    cidr_blocks = module.vpc.vpc_cidr_block
+}
+
 #####Provision EKS
 ##module "eks" {
 ##    source = "./modules/eks"
