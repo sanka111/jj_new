@@ -8,6 +8,7 @@ module "vpc" {
 module "ec2" {
     source = "./modules/ec2"
     private_subnets_ids = module.vpc.private_subnets
+    dmz_subnet_ids = module.vpc.dmz_subnets
     vpc_id = module.vpc.vpc_id 
     common_tags = local.common_tags
     cidr_blocks = module.vpc.vpc_cidr_block
