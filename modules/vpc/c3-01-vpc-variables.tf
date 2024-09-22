@@ -18,7 +18,7 @@ variable "vpc_cidr_block" {
 variable "vpc_prod_public_subnets" {
   description = "VPC Public Subnets"
   type = list(string)
-  default = [ "10.140.0.1/26", "10.140.0.64/26" ]
+  default = [ "10.140.0.0/26", "10.140.0.64/26" ]
 }
 
 ### VPC Database Subnets

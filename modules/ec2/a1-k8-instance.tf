@@ -23,7 +23,7 @@ module "k8_woker" {
   instance_type          = var.instance_type
   key_name               = var.instance_keypair
   #monitoring             = true
-  subnet_id              = var.private_subnets_ids[0]
+  subnet_id              = var.private_subnets_ids[1]
   vpc_security_group_ids = [aws_security_group.k8_sg.id]
   tags = var.common_tags
 }
