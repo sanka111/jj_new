@@ -24,8 +24,8 @@ module "vpc" {
   # create_database_nat_gateway_route = true          #Defalut false
   
   # NAT Gateways - Outbound Communication
-  ##enable_nat_gateway = var.vpc_enable_nat_gateway 
-  ##single_nat_gateway = var.vpc_single_nat_gateway
+  enable_nat_gateway = var.vpc_enable_nat_gateway 
+  single_nat_gateway = var.vpc_single_nat_gateway
 
   # VPC DNS Parameters
   enable_dns_hostnames = true

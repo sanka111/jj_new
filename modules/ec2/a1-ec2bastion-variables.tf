@@ -14,7 +14,7 @@ variable "instance_type_bs" {
 variable "instance_keypair_bs" {
   description = "AWS EC2 Key pair that need to be associated with EC2 Instance"
   type = string
-  default = "soeasy-k8"
+  default = "soeasy-bastion"
 }
 
 #Variable to get public Subnet
