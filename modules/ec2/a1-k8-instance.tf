@@ -35,21 +35,15 @@ module "k8_master" {
   sed -i '/swap/d' /etc/fstab
 
   # Letting iptables see bridged traffic
-  cat <<EOF1 | sudo tee /etc/modules-load.d/k8s.conf
-  br_netfilter
-  EOF1
+    echo "br_netfilter" > /etc/modules-load.d/k8s.conf
+    modprobe br_netfilter
 
-  modprobe br_netfilter
+    echo "net.bridge.bridge-nf-call-ip6tables = 1" > /etc/sysctl.d/k8s.conf
+    echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.d/k8s.conf
+    sysctl --system
 
-  cat <<EOF2 | sudo tee /etc/sysctl.d/k8s.conf
-  net.bridge.bridge-nf-call-ip6tables = 1
-  net.bridge.bridge-nf-call-iptables = 1
-  EOF2
-
-  sysctl --system
-
-# Install kubeadm, kubelet, and kubectl
-cat <<EOF3 > /etc/yum.repos.d/kubernetes.repo
+    # Install Kubernetes components
+    cat > /etc/yum.repos.d/kubernetes.repo <<EOF_REPO
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -57,9 +51,8 @@ enabled=1
 gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-EOF3
+EOF_REPO
 
-# Install Kubernetes components
 yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 # Enable kubelet
