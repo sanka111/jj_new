@@ -17,23 +17,9 @@ variable "instance_keypair_bs" {
   default = "soeasy-k8"
 }
 
-#Variabe to get VPC ID from VPC Module
-variable "vpc_id" {
-  type = string
-}
-
 #Variable to get public Subnet
 variable "dmz_subnet_ids" {
   description = "A list of VPC subnet IDs"
   type        = list(string)
-}
-
-#Common Tags
-variable "common_tags" {
-  type = map(string)
-}
-
-variable "cidr_blocks" {
-  type = string
 }
 

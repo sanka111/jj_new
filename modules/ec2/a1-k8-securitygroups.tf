@@ -24,21 +24,12 @@ resource "aws_security_group" "k8_sg" {
 }
 
 
-resource "aws_security_group_rule" "allow_ssh_public" {
+resource "aws_security_group_rule" "allow_ssh_internal" {
   type              = "ingress"
   from_port         = 22
   to_port           = 22
   protocol          = "tcp"
   security_group_id = aws_security_group.k8_sg.id
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["10.140.0.0/16"]
 }
 
-resource "aws_security_group_rule" "allow_ssh_jump1" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  security_group_id = aws_security_group.k8_sg.id
-  cidr_blocks = ["10.100.101.100/32"]
-  description = "allow ssh from jump 1"
-}
