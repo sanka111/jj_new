@@ -12,6 +12,45 @@ module "k8_master" {
   subnet_id              = var.private_subnets_ids[0]
   vpc_security_group_ids = [aws_security_group.k8_sg.id]
   tags = var.common_tags
+
+   # Define user_data script to install Kubernetes
+  user_data = <<-EOF
+    #!/bin/bash
+    # Update the package list
+    apt-get update -y
+
+    # Install Docker (required for Kubernetes)
+    apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+
+    # Add Docker repository
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    apt-get update -y
+    apt-get install -y containerd.io
+
+    # Configure containerd to use systemd as cgroup driver
+    mkdir -p /etc/containerd
+    containerd config default > /etc/containerd/config.toml
+    sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+    systemctl restart containerd
+    systemctl enable containerd
+
+    # Install Kubernetes components (kubelet, kubeadm, kubectl)
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+    apt-get update -y
+    apt-get install -y kubelet kubeadm kubectl
+    apt-mark hold kubelet kubeadm kubectl
+
+    # Enable kubelet service
+    systemctl enable kubelet
+
+    # Initialize Kubernetes master node (for master node only)
+    # kubeadm init --pod-network-cidr=10.244.0.0/16
+
+    # For worker nodes, you would use `kubeadm join` to join the master
+    # Join command will come from the master node
+  EOF
 }
 
 module "k8_woker" {
